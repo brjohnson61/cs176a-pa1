@@ -22,16 +22,17 @@ class server_java_udp{
             try{
                 Integer incomingLength = 0;
                 Boolean readyForData = false;
-                byte [] bufferLength = new byte [512];
-                DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
-                try{
-                    this.udpSocket.receive(incoming);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
-                this.clientAddress = incoming.getAddress();
-                this.clientPort = incoming.getPort();
+                // byte [] bufferLength = new byte [512];
+                // DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
+                // try{
+                //     this.udpSocket.receive(incoming);
+                // }catch(Exception e){
+                //     e.printStackTrace();
+                // }
+                // String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
+                // this.clientAddress = incoming.getAddress();
+                // this.clientPort = incoming.getPort();
+                String incomingLengthMessage = receiveLength();
                 System.out.print("Incoming length: ");
                 System.out.println(incomingLengthMessage);
                 
@@ -55,14 +56,10 @@ class server_java_udp{
 
                 if(readyForData){
                     System.out.println("ACK sent, ready for command");
-                    String incomingCommand = receivePacket(incomingLength);
-                    // byte[] bufferData = new byte[incomingLength];
-                    // DatagramPacket incomingData = new DatagramPacket(bufferData, bufferData.length);
-                    // this.udpSocket.receive(incomingData);
-                    // String incomingCommand = new String(incomingData.getData(), 0, incomingData.getLength());
+                    String incomingCommand = receiveCommand(incomingLength);
+                    sendACK();
                     System.out.print("Command from client: ");
                     System.out.println(incomingCommand);
-                    sendACK();
                     String commandResult = processMessage(incomingCommand);
                     System.out.println(commandResult);
 
@@ -84,7 +81,22 @@ class server_java_udp{
         return true;
     }
 
-    private String receivePacket(Integer expectedLength){
+    private String receiveLength(){
+        byte [] bufferLength = new byte [256];
+        DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
+        this.clientAddress = incoming.getAddress();
+        this.clientPort = incoming.getPort();
+        try{
+            this.udpSocket.receive(incoming);
+        }catch(Exception e){
+            e.printStackTrace();
+            return "Error";
+        }
+        String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
+        return incomingLengthMessage;
+    }
+
+    private String receiveCommand(Integer expectedLength){
         String receivedString;
         try{
             byte[] receiveBuf = new byte[expectedLength];
