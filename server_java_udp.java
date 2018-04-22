@@ -12,7 +12,7 @@ class server_java_udp{
     private static final byte [] bufACK = ACK.getBytes();
 
     public void setupUDPServer(Integer port){
-        String incomingLength = "";
+        Integer incomingLength = 0;
         try{
             this.udpSocket = new DatagramSocket(port);
         }catch(Exception e){
@@ -35,16 +35,18 @@ class server_java_udp{
                 System.out.println(incomingData);
                 
                 String [] parseCommand = incomingData.split(" ");
+                ArrayList<String> parsedArgsArrList = new ArrayList<String>();
                 for(String c : parseCommand){
+                    parsedArgsArrList.add(c);
                     System.out.println(c);
                 }
-                DatagramPacket ackOutgoing;
+                
                 System.out.print("parseCommand.length: ");
-                System.out.println(parseCommand.length);
-                if(parseCommand.length > 2){
-                    if(parseCommand[0].equals("length") && parseCommand[1].equals("=")){
-                        incomingLength = parseCommand[3];
-                        ackOutgoing = new DatagramPacket(bufACK, bufACK.length, clientAddress, clientPort);
+                System.out.println(parsedArgsArrList.size());
+                if(parsedArgsArrList.size() == 2){
+                    if(parsedArgsArrList.get(0).equals("length") && parsedArgsArrList.get(1).equals("=")){
+                        incomingLength = Integer.valueOf(parsedArgsArrList.get(2));
+                        DatagramPacket ackOutgoing = new DatagramPacket(bufACK, bufACK.length, clientAddress, clientPort);
                         this.udpSocket.send(ackOutgoing); 
                         readyForData = true;
 
