@@ -72,6 +72,12 @@ class server_java_udp{
                     else{
                         System.out.println("Error");
                     }
+                    if(receiveACK()){
+                        System.out.println("ReceivedACK!");
+                    }
+                    else{
+                        System.out.println("Did not receive ACK");
+                    }
                     // DatagramPacket resultLengthToClient = new DatagramPacket(resultLengthBuf, resultLengthBuf.length, this.clientAddress, this.clientPort);
                     // this.udpSocket.send(resultLengthToClient);
                     // DatagramPacket resultToClient = new DatagramPacket(, length)
@@ -109,6 +115,18 @@ class server_java_udp{
             return false;
         }
         return true;
+    }
+
+    private Boolean receiveACK(){
+
+        String isACK = receiveCommand(bufACK.length);
+        if(isACK.equals(ACK)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
     private String receiveCommand(Integer expectedLength){
