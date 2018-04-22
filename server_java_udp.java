@@ -28,26 +28,27 @@ class server_java_udp{
                 }catch(Exception e){
                     e.printStackTrace();
                 }
-                String incomingData = new String(incoming.getData(), 0, incoming.getLength());
+                String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
                 InetAddress clientAddress = incoming.getAddress();
                 Integer clientPort = incoming.getPort();
                 System.out.print("Incoming length: ");
-                System.out.println(incomingData);
+                System.out.println(incomingLengthMessage);
                 
-                String [] parseCommand = incomingData.split(" ");
+                String [] parseCommand = incomingLengthMessage.split(" ");
                 ArrayList<String> parsedArgsArrList = new ArrayList<String>();
                 for(String c : parseCommand){
                     parsedArgsArrList.add(c);
                     System.out.println(c);
                 }
                 
+                DatagramPacket ackOutgoing;
                 System.out.print("parseCommand.length: ");
                 System.out.println(parsedArgsArrList.size());
                 if(parsedArgsArrList.size() == 3){
                     if(parsedArgsArrList.get(0).equals("length") && parsedArgsArrList.get(1).equals("=")){
                         System.out.println("First two are length and  =");
                         incomingLength = Integer.valueOf(parsedArgsArrList.get(2));
-                        DatagramPacket ackOutgoing = new DatagramPacket(bufACK, bufACK.length, clientAddress, clientPort);
+                        ackOutgoing = new DatagramPacket(bufACK, bufACK.length, clientAddress, clientPort);
                         this.udpSocket.send(ackOutgoing); 
                         readyForData = true;
                         System.out.println("Successfully executed ack block");
@@ -56,6 +57,16 @@ class server_java_udp{
 
                 if(readyForData){
                     System.out.println("ACK sent, ready for command");
+                    byte[] bufferData = new byte[incomingLength];
+                    DatagramPacket incomingData = new DatagramPacket(bufferData, bufferData.length);
+                    this.udpSocket.receive(incomingData);
+                    String incomingCommand = new String(incomingData.getData(), 0, incomingData.getLength());
+                    System.out.print("Command from client: ");
+                    System.out.println(incomingCommand);
+
+                    
+
+
                 }
             }catch(Exception e){
                 e.printStackTrace();

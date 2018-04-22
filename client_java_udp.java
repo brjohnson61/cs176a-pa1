@@ -17,8 +17,18 @@ class client_java_udp{
         }catch(Exception e){
             e.printStackTrace();
         }
-        byte[] buffer = command.getBytes();
-        DatagramPacket outgoing = new DatagramPacket(buffer, buffer.length, IPAddress, port);
+        String lengthEquals = "length = ";
+        byte[] bufferCommand = command.getBytes();
+        Integer outgoingLength = Integer.valueOf(bufferCommand.length);
+        String lengthMessage = lengthEquals.concat(Integer.toString(outgoingLength));
+        byte[] bufferLengthMessage = lengthMessage.getBytes();
+        
+        System.out.print("outgoingLength");
+        System.out.println(outgoingLength);
+        System.out.print("lengthMessage");
+        System.out.println(lengthMessage);
+        
+        DatagramPacket outgoing = new DatagramPacket(bufferLengthMessage, bufferLengthMessage.length, IPAddress, port);
         try{
             this.udpSocket.send(outgoing);
         }catch(Exception e){
