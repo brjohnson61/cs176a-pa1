@@ -9,29 +9,51 @@ class server_java_udp{
     private InetAddress clientAddress;
     private static Scanner scanner;
     private static final String ACK = "ACK";
-
+    private static final byte [] bufACK = ACK.getBytes();
 
     public void setupUDPServer(Integer port){
+        String incomingLength = "";
         try{
             this.udpSocket = new DatagramSocket(port);
         }catch(Exception e){
             e.printStackTrace();
         }
         while(true){
-            byte [] buffer = new byte [512];
-            DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
             try{
-                this.udpSocket.receive(incoming);
+                Boolean readyForData = false;
+                byte [] bufferLength = new byte [512];
+                DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
+                try{
+                    this.udpSocket.receive(incoming);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                String incomingData = new String(incoming.getData(), 0, incoming.getLength());
+                InetAddress clientAddress = incoming.getAddress();
+                Integer clientPort = incoming.getPort();
+                System.out.print("Incoming length: ");
+                System.out.println(incomingData);
+                
+                String [] parseCommand = incomingData.split(" ");
+                for(String c : parseCommand){
+                    System.out.println(c);
+                }
+                DatagramPacket ackOutgoing;
+                if(parseCommand.length > 2){
+                    if(parseCommand[0].equals("length") && parseCommand[1].equals("=")){
+                        incomingLength = parseCommand[3];
+                        ackOutgoing = new DatagramPacket(bufACK, bufACK.length, clientAddress, clientPort);
+                        this.udpSocket.send(ackOutgoing); 
+                        readyForData = true;
+
+                    }
+                }
+
+                if(readyForData){
+                    System.out.println("ACK sent, ready for command");
+                }
             }catch(Exception e){
                 e.printStackTrace();
-            }
-            String incomingData = new String(incoming.getData(), 0, incoming.getLength());
-            System.out.print("Incoming message: ");
-            System.out.println(incomingData);
-            
-            String [] parseCommand = incomingData.split(" ");
-            for(String c : parseCommand){
-                System.out.println(c);
             }
         }
     }
