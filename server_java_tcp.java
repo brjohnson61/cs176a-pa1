@@ -23,8 +23,11 @@ void setupTCPServer(){
         try{
             //create new server socket and listen
             this.tcpServerSocket = new ServerSocket(this.ListeningPort);
+            System.out.println("Server waiting for request");
             this.tcpSocket = this.tcpServerSocket.accept();
             
+            System.out.println("SocketAccepted");
+
             //set up streams
             this.inStream = new InputStreamReader(this.tcpSocket.getInputStream());
             this.bufInStream = new BufferedReader(this.inStream);

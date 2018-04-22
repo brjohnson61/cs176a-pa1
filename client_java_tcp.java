@@ -20,21 +20,30 @@ class client_java_tcp{
         this.serverIPAddress = IPAddress;
         try{
             this.tcpSocket = new Socket(this.serverIPAddress, this.serverPortNumber);
+            System.out.println("Socket created successfully");
         }catch(Exception e){
             e.printStackTrace();
         }
 
         try{
+
+            System.out.println("Setting up streams");
+
             this.outStream = new OutputStreamWriter(this.tcpSocket.getOutputStream());
             this.bufOutStream = new BufferedWriter(this.outStream);
 
             this.inStream = new InputStreamReader(this.tcpSocket.getInputStream());
             this.bufInStream = new BufferedReader(this.inStream);
 
+            System.out.println("Streams set up, about to write command");
+
             this.bufOutStream.write(command);
+
+            System.out.println("Wrote command to server");
             for(String receive = this.bufInStream.readLine(); receive != null; receive = this.bufInStream.readLine()){
                 fromServer += receive;
             }
+            System.out.print("Message received: ");
             System.out.println(fromServer);
         }catch(Exception e){
             e.printStackTrace();
