@@ -52,10 +52,10 @@ void setupTCPServer(){
             this.bufOutStream.write(outputToClient);
 
             //close streams
-            this.bufInStream.close();
-            this.bufOutStream.close();
-            this.inStream.close();
-            this.outStream.close();
+            // this.bufInStream.close();
+            // this.bufOutStream.close();
+            // this.inStream.close();
+            // this.outStream.close();
         }catch(Exception e){
             e.printStackTrace();
         }

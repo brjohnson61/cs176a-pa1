@@ -65,6 +65,9 @@ class client_java_tcp{
         System.out.print("Enter Command: ");
         command = scanner.nextLine();
 
+        System.out.print("Command is: ");
+        System.out.println(command);
+
         client_java_tcp client = new client_java_tcp();
         client.connect(IPAddress, port, command);
     }
