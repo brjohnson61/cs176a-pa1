@@ -30,8 +30,8 @@ class server_java_udp{
                     e.printStackTrace();
                 }
                 String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
-                InetAddress clientAddress = incoming.getAddress();
-                Integer clientPort = incoming.getPort();
+                this.clientAddress = incoming.getAddress();
+                this.clientPort = incoming.getPort();
                 System.out.print("Incoming length: ");
                 System.out.println(incomingLengthMessage);
                 
