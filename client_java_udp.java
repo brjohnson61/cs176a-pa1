@@ -39,6 +39,12 @@ class client_java_udp{
             System.out.println("Sending command packet");
             this.udpSocket.send(outgoingCommandPacket);
             System.out.println("Command Packet Sent");
+            if(receiveACK()){
+                System.out.println("Server received command");
+            }
+            else{
+                System.out.println("Server did not receive command");
+            }
             String commandLength = receiveLength();
             System.out.println(commandLength);
             System.out.println("Received command");
