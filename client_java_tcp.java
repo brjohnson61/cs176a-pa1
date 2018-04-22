@@ -35,7 +35,8 @@ class client_java_tcp{
             this.inStream = new InputStreamReader(this.tcpSocket.getInputStream());
             this.bufInStream = new BufferedReader(this.inStream);
 
-            System.out.println("Streams set up, about to write command");
+            System.out.print("Streams set up, about to write command:");
+            System.out.println(command);
 
             this.bufOutStream.write(command);
 
