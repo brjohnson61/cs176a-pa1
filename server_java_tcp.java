@@ -72,6 +72,7 @@ private String processMessage(String message){
         BufferedReader chainFromTerminal = new BufferedReader(fromTerminal);
         for(String bufferString = chainFromTerminal.readLine(); bufferString != null; bufferString = chainFromTerminal.readLine()){
             processedOutput = processedOutput.concat(bufferString);
+            processedOutput = processedOutput.concat("\n");
         }
         chainFromTerminal.close();
 
