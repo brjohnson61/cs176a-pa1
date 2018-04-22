@@ -71,7 +71,7 @@ private String processMessage(String message){
         InputStreamReader fromTerminal = new InputStreamReader(terminalCommand.getInputStream());
         BufferedReader chainFromTerminal = new BufferedReader(fromTerminal);
         for(String bufferString = chainFromTerminal.readLine(); bufferString != null; bufferString = chainFromTerminal.readLine()){
-            processedOutput += bufferString;
+            processedOutput = processedOutput.concat(bufferString);
         }
         chainFromTerminal.close();
 
