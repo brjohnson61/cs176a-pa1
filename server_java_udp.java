@@ -82,7 +82,7 @@ class server_java_udp{
     }
 
     private String receiveLength(){
-        byte [] bufferLength = new byte [256];
+        byte [] bufferLength = new byte [512];
         DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
         this.clientAddress = incoming.getAddress();
         this.clientPort = incoming.getPort();
