@@ -63,8 +63,10 @@ class client_java_tcp{
         }
         //Checks to make sure ip is in valid range for each section.
         else{
-            for(int i=0; i<4; i++){
+            for(int i=0; i<parsed.length; i++){
                 Integer temp = Integer.valueOf(parsed[i]);
+                System.out.print("Temp = ");
+                System.out.println(temp);
                 if(temp > 255 || temp < 0){
                     System.out.println(COULD_NOT_CONNECT);
                     System.exit(0);
