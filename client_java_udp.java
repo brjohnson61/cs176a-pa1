@@ -39,12 +39,65 @@ class client_java_udp{
             System.out.println("Sending command packet");
             this.udpSocket.send(outgoingCommandPacket);
             System.out.println("Command Packet Sent");
+            String commandLength = receiveLength();
+            System.out.println(commandLength);
+            System.out.println("Received command");
+            sendACK();
+            
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
+    private Boolean sendACK(){
+        try{
+            DatagramPacket ackOutgoing = new DatagramPacket(bufACK, bufACK.length, this.serverIPAddress, this.port);
+            this.udpSocket.send(ackOutgoing);
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
+    private String receiveLength(){
+        //Integer incomingLength = 0;
+        byte [] bufferLength = new byte [512];
+        DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
+        try{
+            this.udpSocket.receive(incoming);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
+        return incomingLengthMessage;
+    }
+
+    private Boolean receiveACK(){
+
+        String isACK = receiveCommand(bufACK.length);
+        if(isACK.equals(ACK)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    private String receiveCommand(Integer expectedLength){
+        String receivedString;
+        try{
+            byte[] receiveBuf = new byte[expectedLength];
+            DatagramPacket receivedPacket = new DatagramPacket(receiveBuf, receiveBuf.length);
+            this.udpSocket.receive(receivedPacket);
+            receivedString = new String(receivedPacket.getData(), 0, receivedPacket.getLength());
+        }catch(Exception e){
+            e.printStackTrace();
+            receivedString = "Error"; 
+        }
+        return receivedString;
+    }
 
 
     public static void main(String[] args) {
