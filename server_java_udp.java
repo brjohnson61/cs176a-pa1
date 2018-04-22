@@ -55,10 +55,11 @@ class server_java_udp{
 
                 if(readyForData){
                     System.out.println("ACK sent, ready for command");
-                    byte[] bufferData = new byte[incomingLength];
-                    DatagramPacket incomingData = new DatagramPacket(bufferData, bufferData.length);
-                    this.udpSocket.receive(incomingData);
-                    String incomingCommand = new String(incomingData.getData(), 0, incomingData.getLength());
+                    String incomingCommand = receivePacket(incomingLength);
+                    // byte[] bufferData = new byte[incomingLength];
+                    // DatagramPacket incomingData = new DatagramPacket(bufferData, bufferData.length);
+                    // this.udpSocket.receive(incomingData);
+                    // String incomingCommand = new String(incomingData.getData(), 0, incomingData.getLength());
                     System.out.print("Command from client: ");
                     System.out.println(incomingCommand);
                     sendACK();
@@ -74,13 +75,27 @@ class server_java_udp{
 
     private Boolean sendACK(){
         try{
-            DatagramPacket ackOutgoing = new DatagramPacket(bufACK, bufACK.length, clientAddress, clientPort);
+            DatagramPacket ackOutgoing = new DatagramPacket(bufACK, bufACK.length, this.clientAddress, this.clientPort);
             this.udpSocket.send(ackOutgoing);
         }catch(Exception e){
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    private String receivePacket(Integer expectedLength){
+        String receivedString;
+        try{
+            byte[] receiveBuf = new byte[expectedLength];
+            DatagramPacket receivedPacket = new DatagramPacket(receiveBuf, receiveBuf.length);
+            this.udpSocket.receive(receivedPacket);
+            receivedString = new String(receivedPacket.getData(), 0, receivedPacket.getLength());
+        }catch(Exception e){
+            e.printStackTrace();
+            receivedString = "Error"; 
+        }
+        return receivedString;
     }
 
     private String processMessage(String message){
