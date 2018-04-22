@@ -39,6 +39,8 @@ class server_java_udp{
                     System.out.println(c);
                 }
                 DatagramPacket ackOutgoing;
+                System.out.print("parseCommand.length: ");
+                System.out.println(parseCommand.length);
                 if(parseCommand.length > 2){
                     if(parseCommand[0].equals("length") && parseCommand[1].equals("=")){
                         incomingLength = parseCommand[3];
