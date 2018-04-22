@@ -9,28 +9,32 @@ class client_java_udp{
     private Integer port;
     private String clientAddress;
     private static Scanner scanner;
+    private static final String ACK = "ACK";
+    private static final byte [] bufACK = ACK.getBytes();
 
 
     public void connect(InetAddress IPAddress, Integer port, String command, String fileName){
         try{
             this.udpSocket = new DatagramSocket();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        String lengthEquals = "length = ";
-        byte[] bufferCommand = command.getBytes();
-        Integer outgoingLength = Integer.valueOf(bufferCommand.length);
-        String lengthMessage = lengthEquals.concat(Integer.toString(outgoingLength));
-        byte[] bufferLengthMessage = lengthMessage.getBytes();
-        
-        System.out.print("outgoingLength");
-        System.out.println(outgoingLength);
-        System.out.print("lengthMessage");
-        System.out.println(lengthMessage);
-        
-        DatagramPacket outgoing = new DatagramPacket(bufferLengthMessage, bufferLengthMessage.length, IPAddress, port);
-        try{
-            this.udpSocket.send(outgoing);
+            DatagramPacket incomingACK = new DatagramPacket(bufACK, bufACK.length);
+            String lengthEquals = "length = ";
+            byte[] bufferCommand = command.getBytes();
+            Integer outgoingLength = Integer.valueOf(bufferCommand.length);
+            String lengthMessage = lengthEquals.concat(Integer.toString(outgoingLength));
+            byte[] bufferLengthMessage = lengthMessage.getBytes();
+            
+            System.out.print("outgoingLength");
+            System.out.println(outgoingLength);
+            System.out.print("lengthMessage");
+            System.out.println(lengthMessage);
+            
+            DatagramPacket outgoingLengthPacket = new DatagramPacket(bufferLengthMessage, bufferLengthMessage.length, IPAddress, port);
+            this.udpSocket.send(outgoingLengthPacket);
+            this.udpSocket.receive(incomingACK);
+            String incomingACKMessage = new String(incomingACK.getData(), 0, incomingACK.getLength());
+            if(incomingACKMessage.equals(ACK)){
+                System.out.println("ACK received");
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
