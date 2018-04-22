@@ -58,6 +58,7 @@ class client_java_tcp{
         String [] parsed = IPAddress.split(".");
         //Check to see if there aren't 4 sections of IP Address.
         if(parsed.length != 4){
+            System.out.println(parsed.length);
             System.out.println(COULD_NOT_CONNECT);
             System.exit(0);
         }
