@@ -13,9 +13,10 @@ class client_java_udp{
     private static final byte [] bufACK = ACK.getBytes();
 
 
-    public void connect(InetAddress IPAddress, Integer port, String command, String fileName){
+    public void connect(InetAddress IPAddress, Integer portInput, String command, String fileName){
         try{
             this.udpSocket = new DatagramSocket();
+            this.port = portInput;
             DatagramPacket incomingACK = new DatagramPacket(bufACK, bufACK.length);
             String lengthEquals = "length = ";
             byte[] bufferCommand = command.getBytes();
