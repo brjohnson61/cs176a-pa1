@@ -8,7 +8,7 @@ class client_java_tcp{
     private String serverIPAddress;
     private Integer serverPortNumber;
     private ObjectInputStream inStream;
-    private BufferedReader bufInStream;
+    //private BufferedReader bufInStream;
     private ObjectOutputStream outStream;
     //private BufferedWriter bufOutStream;
     private Socket tcpSocket;
@@ -49,7 +49,7 @@ class client_java_tcp{
 
             System.out.print("Message received: ");
             System.out.println(fromServer);
-            this.tcpSocket.close();
+            //this.tcpSocket.close();
         }catch(Exception e){
             e.printStackTrace();
         }
