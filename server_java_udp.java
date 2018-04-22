@@ -45,11 +45,12 @@ class server_java_udp{
                 System.out.println(parsedArgsArrList.size());
                 if(parsedArgsArrList.size() == 2){
                     if(parsedArgsArrList.get(0).equals("length") && parsedArgsArrList.get(1).equals("=")){
+                        System.out.println("First two are length and  =");
                         incomingLength = Integer.valueOf(parsedArgsArrList.get(2));
                         DatagramPacket ackOutgoing = new DatagramPacket(bufACK, bufACK.length, clientAddress, clientPort);
                         this.udpSocket.send(ackOutgoing); 
                         readyForData = true;
-
+                        System.out.println("Successfully executed ack block");
                     }
                 }
 
