@@ -32,11 +32,19 @@ void setupTCPServer(){
             this.inStream = new InputStreamReader(this.tcpSocket.getInputStream());
             this.bufInStream = new BufferedReader(this.inStream);
             
+            System.out.println("Input streams created");
+
             //get terminal command from client
             String message = bufInStream.readLine();
 
+            System.out.print("Message is: ");
+            System.out.println(message);
+
             //run command on server
             String outputToClient = processMessage(message);
+
+            System.out.println("Ran command, output is: ");
+            System.out.println(outputToClient);
 
             //send output back to client
             this.outStream = new OutputStreamWriter(this.tcpSocket.getOutputStream());
