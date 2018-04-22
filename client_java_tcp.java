@@ -8,9 +8,7 @@ class client_java_tcp{
     private String serverIPAddress;
     private Integer serverPortNumber;
     private ObjectInputStream inStream;
-    //private BufferedReader bufInStream;
     private ObjectOutputStream outStream;
-    //private BufferedWriter bufOutStream;
     private Socket tcpSocket;
     private static Scanner scanner;
 
@@ -26,30 +24,18 @@ class client_java_tcp{
         }
 
         try{
-
             System.out.println("Setting up streams");
-
             this.outStream = new ObjectOutputStream(this.tcpSocket.getOutputStream());
-            //this.bufOutStream = new BufferedWriter(this.outStream);
-
             this.inStream = new ObjectInputStream(this.tcpSocket.getInputStream());
-            //this.bufInStream = new BufferedReader(this.inStream);
 
             System.out.print("Streams set up, about to write command:");
             System.out.println(command);
-
             this.outStream.writeObject(command);
-            //this.bufOutStream.write(command, 0, command.length());
-
             System.out.println("Wrote command to server");
-            // for(String receive = this.bufInStream.readLine(); receive != null; receive = this.bufInStream.readLine()){
-            //     fromServer += receive;
-            // }
             fromServer = (String) this.inStream.readObject();
 
             System.out.print("Message received: ");
             System.out.println(fromServer);
-            //this.tcpSocket.close();
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -19,10 +19,14 @@ public void setListeningPort(Integer lp){
 }
 
 void setupTCPServer(){
+    try{
+        this.tcpServerSocket = new ServerSocket(this.ListeningPort);
+    }catch(Exception e){
+        e.printStackTrace();
+    }
     while(true){
         try{
             //create new server socket and listen
-            this.tcpServerSocket = new ServerSocket(this.ListeningPort);
             System.out.println("Server waiting for request");
             this.tcpSocket = this.tcpServerSocket.accept();
             
@@ -30,13 +34,12 @@ void setupTCPServer(){
 
             //set up streams
             this.inStream = new ObjectInputStream(this.tcpSocket.getInputStream());
-            //this.bufInStream = new BufferedReader(this.inStream);
+            this.outStream = new ObjectOutputStream(this.tcpSocket.getOutputStream());
             
             System.out.println("Input streams created");
 
             //get terminal command from client
             String message = (String) this.inStream.readObject();
-            //bufInStream.readLine();
 
             System.out.print("Message is: ");
             System.out.println(message);
@@ -48,24 +51,9 @@ void setupTCPServer(){
             System.out.println(outputToClient);
 
             //send output back to client
-            this.outStream = new ObjectOutputStream(this.tcpSocket.getOutputStream());
-            //this.bufOutStream = new BufferedWriter(this.outStream);
-            //this.bufOutStream.write(outputToClient);
-
             System.out.println("Writing output back to client");
-
             this.outStream.writeObject(outputToClient);
 
-            //close streams
-            // this.bufInStream.close();
-            // this.bufOutStream.close();
-            // this.inStream.close();
-            // this.outStream.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        try{
-            this.tcpSocket.close();
         }catch(Exception e){
             e.printStackTrace();
         }
