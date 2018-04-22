@@ -8,6 +8,7 @@ class server_java_udp{
     private Integer clientPort;
     private InetAddress clientAddress;
     private static Scanner scanner;
+    private static final String ACK = "ACK";
 
 
     public void setupUDPServer(Integer port){
@@ -27,12 +28,33 @@ class server_java_udp{
             String incomingData = new String(incoming.getData(), 0, incoming.getLength());
             System.out.print("Incoming message: ");
             System.out.println(incomingData);
-
-
+            
+            String [] parseCommand = incomingData.split(" ");
+            for(String c : parseCommand){
+                System.out.println(c);
+            }
         }
     }
 
-
+    private String processMessage(String message){
+        String processedOutput = "";
+        try{
+            Process terminalCommand = Runtime.getRuntime().exec(message);
+            InputStreamReader fromTerminal = new InputStreamReader(terminalCommand.getInputStream());
+            BufferedReader chainFromTerminal = new BufferedReader(fromTerminal);
+            for(String bufferString = chainFromTerminal.readLine(); bufferString != null; bufferString = chainFromTerminal.readLine()){
+                processedOutput = processedOutput.concat(bufferString);
+                processedOutput = processedOutput.concat("\n");
+            }
+            chainFromTerminal.close();
+    
+            terminalCommand.waitFor();
+            terminalCommand.destroy();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return processedOutput;
+    }
 
 
 

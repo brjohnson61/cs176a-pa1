@@ -10,6 +10,7 @@ class client_java_udp{
     private String clientAddress;
     private static Scanner scanner;
 
+
     public void connect(InetAddress IPAddress, Integer port, String command, String fileName){
         try{
             this.udpSocket = new DatagramSocket();
