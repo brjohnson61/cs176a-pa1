@@ -8,10 +8,10 @@ class server_java_tcp{
 private Integer ListeningPort;
 private ServerSocket tcpServerSocket;
 private Socket tcpSocket;
-private BufferedReader bufInStream;
+//private BufferedReader bufInStream;
 private ObjectInputStream inStream;
-private OutputStreamWriter outStream;
-private BufferedWriter bufOutStream;
+private ObjectOutputStream outStream;
+//private BufferedWriter bufOutStream;
 private static Scanner scanner;
 
 public void setListeningPort(Integer lp){
@@ -48,15 +48,24 @@ void setupTCPServer(){
             System.out.println(outputToClient);
 
             //send output back to client
-            this.outStream = new OutputStreamWriter(this.tcpSocket.getOutputStream());
-            this.bufOutStream = new BufferedWriter(this.outStream);
-            this.bufOutStream.write(outputToClient);
+            this.outStream = new ObjectOutputStream(this.tcpSocket.getOutputStream());
+            //this.bufOutStream = new BufferedWriter(this.outStream);
+            //this.bufOutStream.write(outputToClient);
+
+            System.out.println("Writing output back to client");
+
+            this.outStream.writeObject(outputToClient);
 
             //close streams
             // this.bufInStream.close();
             // this.bufOutStream.close();
             // this.inStream.close();
             // this.outStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            this.tcpSocket.close();
         }catch(Exception e){
             e.printStackTrace();
         }
