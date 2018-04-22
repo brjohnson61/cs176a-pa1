@@ -17,6 +17,7 @@ class client_java_udp{
         try{
             this.udpSocket = new DatagramSocket();
             this.port = portInput;
+            this.serverIPAddress = IPAddress;
             DatagramPacket incomingACK = new DatagramPacket(bufACK, bufACK.length);
             String lengthEquals = "length = ";
             byte[] bufferCommand = command.getBytes();
@@ -58,7 +59,8 @@ class client_java_udp{
 
     private Boolean sendACK(){
         try{
-            DatagramPacket ackOutgoing = new DatagramPacket(bufACK, bufACK.length, this.serverIPAddress, this.port);
+            byte[] ackbuf = ACK.getBytes();
+            DatagramPacket ackOutgoing = new DatagramPacket(ackbuf, ackbuf.length, this.serverIPAddress, this.port);
             this.udpSocket.send(ackOutgoing);
         }catch(Exception e){
             e.printStackTrace();
