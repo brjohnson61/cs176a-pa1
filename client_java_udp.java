@@ -70,6 +70,8 @@ class client_java_udp{
             e.printStackTrace();
         }
         String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
+        System.out.println("Returning incomingLengthMessage");
+        System.out.println(incomingLengthMessage);
         return incomingLengthMessage;
     }
 
