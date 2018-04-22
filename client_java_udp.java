@@ -33,10 +33,8 @@ class client_java_udp{
             this.udpSocket.receive(incomingACK);
             String incomingACKMessage = new String(incomingACK.getData(), 0, incomingACK.getLength());
             if(incomingACKMessage.equals(ACK)){
-                System.out.print("ACK received: ");
-                
+                System.out.print("ACK received.");   
             }
-            System.out.println(incomingACKMessage);
         }catch(Exception e){
             e.printStackTrace();
         }
