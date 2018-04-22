@@ -45,6 +45,10 @@ class server_java_udp{
                 System.out.print("parseCommand.length: ");
                 System.out.println(parsedArgsArrList.size());
                 if(parsedArgsArrList.size() == 3){
+                    System.out.println("ArrList[0]: ");
+                    System.out.println(parsedArgsArrList.get(0));
+                    System.out.println("ArrList[1]: ");
+                    System.out.println(parsedArgsArrList.get(1));
                     if(parsedArgsArrList.get(0).equals("length") && parsedArgsArrList.get(1).equals("=")){
                         System.out.println("First two are length and  =");
                         incomingLength = Integer.valueOf(parsedArgsArrList.get(2));
@@ -64,7 +68,7 @@ class server_java_udp{
                     System.out.print("Command from client: ");
                     System.out.println(incomingCommand);
 
-                    
+
 
 
                 }
