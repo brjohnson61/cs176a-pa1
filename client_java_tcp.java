@@ -9,7 +9,7 @@ class client_java_tcp{
     private Integer serverPortNumber;
     private InputStreamReader inStream;
     private BufferedReader bufInStream;
-    private DataOutputStream outStream;
+    private ObjectOutputStream outStream;
     //private BufferedWriter bufOutStream;
     private Socket tcpSocket;
     private static Scanner scanner;
@@ -29,7 +29,7 @@ class client_java_tcp{
 
             System.out.println("Setting up streams");
 
-            this.outStream = new DataOutputStream(this.tcpSocket.getOutputStream());
+            this.outStream = new ObjectOutputStream(this.tcpSocket.getOutputStream());
             //this.bufOutStream = new BufferedWriter(this.outStream);
 
             this.inStream = new InputStreamReader(this.tcpSocket.getInputStream());
@@ -38,7 +38,7 @@ class client_java_tcp{
             System.out.print("Streams set up, about to write command:");
             System.out.println(command);
 
-            this.outStream.writeBytes(command + '\n');
+            this.outStream.writeObject(command);
             //this.bufOutStream.write(command, 0, command.length());
 
             System.out.println("Wrote command to server");

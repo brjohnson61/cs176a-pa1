@@ -9,7 +9,7 @@ private Integer ListeningPort;
 private ServerSocket tcpServerSocket;
 private Socket tcpSocket;
 private BufferedReader bufInStream;
-private InputStreamReader inStream;
+private ObjectInputStream inStream;
 private OutputStreamWriter outStream;
 private BufferedWriter bufOutStream;
 private static Scanner scanner;
@@ -29,13 +29,14 @@ void setupTCPServer(){
             System.out.println("SocketAccepted");
 
             //set up streams
-            this.inStream = new InputStreamReader(this.tcpSocket.getInputStream());
-            this.bufInStream = new BufferedReader(this.inStream);
+            this.inStream = new ObjectInputStream(this.tcpSocket.getInputStream());
+            //this.bufInStream = new BufferedReader(this.inStream);
             
             System.out.println("Input streams created");
 
             //get terminal command from client
-            String message = bufInStream.readLine();
+            String message = (String) this.inStream.readObject();
+            //bufInStream.readLine();
 
             System.out.print("Message is: ");
             System.out.println(message);
