@@ -33,8 +33,12 @@ class client_java_udp{
             this.udpSocket.receive(incomingACK);
             String incomingACKMessage = new String(incomingACK.getData(), 0, incomingACK.getLength());
             if(incomingACKMessage.equals(ACK)){
-                System.out.print("ACK received.");   
+                System.out.println("ACK received.");   
             }
+            DatagramPacket outgoingCommandPacket = new DatagramPacket(bufferCommand, bufferCommand.length, IPAddress, port);
+            System.out.println("Sending command packet");
+            this.udpSocket.send(outgoingCommandPacket);
+            System.out.println("Command Packet Sent");
         }catch(Exception e){
             e.printStackTrace();
         }
