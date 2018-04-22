@@ -38,7 +38,7 @@ class client_java_tcp{
             System.out.print("Streams set up, about to write command:");
             System.out.println(command);
 
-            this.outStream.writeBytes(command + "\n");
+            this.outStream.writeBytes(command + '\n');
             //this.bufOutStream.write(command, 0, command.length());
 
             System.out.println("Wrote command to server");
