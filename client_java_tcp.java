@@ -36,6 +36,11 @@ class client_java_tcp{
 
             System.out.print("Message received: ");
             System.out.println(fromServer);
+
+            BufferedWriter toFile = new BufferedWriter(new FileWriter(fileName, true));
+            toFile.write(fromServer);
+            toFile.close();
+
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -98,10 +103,14 @@ class client_java_tcp{
         // else{
             System.out.print("Command is: ");
             System.out.println(command);
+
+            System.out.println("Filename: ");
+            fileName = scanner.nextLine();
             client.connect(IPAddress, port, command, fileName);
         //}
 
         
         
-}
+
+    }
 }
