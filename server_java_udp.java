@@ -22,17 +22,17 @@ class server_java_udp{
             try{
                 Integer incomingLength = 0;
                 Boolean readyForData = false;
-                // byte [] bufferLength = new byte [512];
-                // DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
-                // try{
-                //     this.udpSocket.receive(incoming);
-                // }catch(Exception e){
-                //     e.printStackTrace();
-                // }
-                // String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
-                // this.clientAddress = incoming.getAddress();
-                // this.clientPort = incoming.getPort();
-                String incomingLengthMessage = receiveLength();
+                byte [] bufferLength = new byte [512];
+                DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
+                try{
+                    this.udpSocket.receive(incoming);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
+                this.clientAddress = incoming.getAddress();
+                this.clientPort = incoming.getPort();
+                //String incomingLengthMessage = receiveLength();
                 System.out.print("Incoming length: ");
                 System.out.println(incomingLengthMessage);
                 
@@ -81,20 +81,20 @@ class server_java_udp{
         return true;
     }
 
-    private String receiveLength(){
-        byte [] bufferLength = new byte [512];
-        DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
-        this.clientAddress = incoming.getAddress();
-        this.clientPort = incoming.getPort();
-        try{
-            this.udpSocket.receive(incoming);
-        }catch(Exception e){
-            e.printStackTrace();
-            return "Error";
-        }
-        String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
-        return incomingLengthMessage;
-    }
+    // private String receiveLength(){
+    //     byte [] bufferLength = new byte [512];
+    //     DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
+    //     this.clientAddress = incoming.getAddress();
+    //     this.clientPort = incoming.getPort();
+    //     try{
+    //         this.udpSocket.receive(incoming);
+    //     }catch(Exception e){
+    //         e.printStackTrace();
+    //         return "Error";
+    //     }
+    //     String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
+    //     return incomingLengthMessage;
+    // }
 
     private String receiveCommand(Integer expectedLength){
         String receivedString;
