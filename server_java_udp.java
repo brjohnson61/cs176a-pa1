@@ -63,6 +63,8 @@ class server_java_udp{
                     readyForData = true;
                 }
 
+                System.out.println(initialLength);
+
                 if(readyForData){
                     System.out.println("ACK sent, ready for command");
                     String incomingCommand = receiveCommand(initialLength);
