@@ -18,31 +18,34 @@ class client_java_tcp{
         this.serverIPAddress = IPAddress;
         try{
             this.tcpSocket = new Socket(this.serverIPAddress, this.serverPortNumber);
-            System.out.println("Socket created successfully");
+            //System.out.println("Socket created successfully");
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Could not connect to server");
         }
 
         try{
-            System.out.println("Setting up streams");
+            //System.out.println("Setting up streams");
             this.outStream = new ObjectOutputStream(this.tcpSocket.getOutputStream());
             this.inStream = new ObjectInputStream(this.tcpSocket.getInputStream());
 
-            System.out.print("Streams set up, about to write command:");
-            System.out.println(command);
+            //System.out.print("Streams set up, about to write command:");
+            //System.out.println(command);
             this.outStream.writeObject(command);
-            System.out.println("Wrote command to server");
+            //System.out.println("Wrote command to server");
             fromServer = (String) this.inStream.readObject();
 
-            System.out.print("Message received: ");
-            System.out.println(fromServer);
+            //System.out.print("Message received: ");
+            //System.out.println(fromServer);
 
+            //writes output to file instead of standard input.
             BufferedWriter toFile = new BufferedWriter(new FileWriter(fileName, true));
             toFile.write(fromServer);
             toFile.close();
 
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Error communicating with server");
         }
     }
 
@@ -94,7 +97,10 @@ class client_java_tcp{
             String temp = c.trim();
             commandParse.add(temp);
         }
-
+        if(commandParse.size() != 2){
+            System.out.println("Invalid command was entered");
+            System.exit(0);
+        }
         command = commandParse.get(0);
         fileName = commandParse.get(1);
         client.connect(IPAddress, port, command, fileName);  

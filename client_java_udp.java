@@ -45,8 +45,8 @@ class client_java_udp{
             }
             String commandLength = receiveLength();
             commandLength = Integer.toString(parseLength(commandLength));
-            System.out.println(commandLength);
-            System.out.println("Received command length");
+            // System.out.println(commandLength);
+            // System.out.println("Received command length");
             sendACK();
             String finalOutput = receiveCommand(Integer.valueOf(commandLength));
             sendACK();
@@ -207,7 +207,7 @@ class client_java_udp{
 
         command = commandParse.get(0);
         fileName = commandParse.get(1);
-        
+
         try{
             InetAddress ip = InetAddress.getByName(IPAddress);
             client.connect(ip, port, command, fileName);
