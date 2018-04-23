@@ -33,57 +33,70 @@ class server_java_udp{
                 }
 
                 if(readyForData){
-                    System.out.println("ACK sent, ready for command");
+                    //System.out.println("ACK sent, ready for command");
                     String incomingCommand = receiveCommand(initialLength);
                     sendACK();
-                    System.out.print("Command from client: ");
+                    //System.out.print("Command from client: ");
                     System.out.println(incomingCommand);
                     String commandResult = processMessage(incomingCommand);
-                    System.out.println(commandResult);
+                    //System.out.println(commandResult);
+                    Integer outputLength = commandResult.length()*2;
                     int FAIL0 = 0;
                     while(FAIL0 < 3 && !SUCCEED0){
                         if(sendLength(commandResult)){
-                            System.out.println("Success sending result length");
+                            //System.out.println("Success sending result length");
                             FAIL0++;
                         }
                         else{
-                            System.out.println("Error");
+                            //System.out.println("Error");
                         }
                         if(receiveACK()){
                             SUCCEED0 = true;
-                            System.out.println("ReceivedACK!");
+                            //System.out.println("ReceivedACK!");
                         
                         }
                         else{
-                            System.out.println("Did not receive ACK");
+                            //System.out.println("Did not receive ACK");
                         }
                     }
-                    int FAIL1 = 0;
-                    while(FAIL1 < 3 && !SUCCEED1 && SUCCEED0){
-                        if(sendCommand(commandResult)){
-                            FAIL1++;
-                            System.out.println("Sent command results to client");
-                        }
-                        else{
-                            System.out.println("Failed to send command");
-                        }
-                        if(receiveACK()){
-                            SUCCEED1 = true;
-                            System.out.println("Client received command results");
-                        }
-                        else{
-                            System.out.println("Client did not receive command results");
+                    Integer numberOfSends = ((outputLength/512)+1);
+                    System.out.println("number of sends:");
+                    System.out.println(numberOfSends);
+                    for(int i=0; i<numberOfSends; i++){
+                        int FAIL1 = 0;
+                        while(FAIL1 < 3 && !SUCCEED1 && SUCCEED0){
+                            String temp;
+                            if(numberOfSends > 1){
+                                temp = commandResult.substring(512*i, 512*(i+1));
+                            }
+                            else{
+                                temp = commandResult;
+                            }
+                            if(sendCommand(temp)){
+                                FAIL1++;
+                                //System.out.println("Sent command results to client");
+                            }
+                            else{
+                                //System.out.println("Failed to send command");
+                            }
+                            if(receiveACK()){
+                                SUCCEED1 = true;
+                                //System.out.println("Client received command results");
+                            }
+                            else{
+                                //System.out.println("Client did not receive command results");
+                            }
                         }
                     }
-
                 }
                 else{
                     if(!SUCCEED0 || !SUCCEED1){
-                        System.out.println("Command not received, listening for coimmand again");
+                        System.out.println("Command not received, listening for command again.");
                     }
                 }
             }catch(Exception e){
-                e.printStackTrace();
+                //e.printStackTrace();
+                System.out.println("Network communication error. Please try again.");
             }
             this.udpSocket.close();
         }
@@ -225,7 +238,7 @@ public static void main(String[] args) {
     System.out.print("This machine's IP: ");
     System.out.println(IPAddress);
 
-    //System.out.println("Server Listening Port:");
+    System.out.println("Enter port:");
     Integer userInput = Integer.valueOf(scanner.nextLine());
 
     if((userInput > 0) && (userInput < 65535)){

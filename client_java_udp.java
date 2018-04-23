@@ -63,8 +63,19 @@ class client_java_udp{
                 // System.out.println("Received command length");
                 sendACK();
                 String finalOutput = "";
-                finalOutput = receiveCommand(Integer.valueOf(commandLength));
-                sendACK();
+                Integer outputLength = Integer.valueOf(commandLength);
+                Integer numberOfSends = ((outputLength/512)+1);
+                for(int i=0; i<numberOfSends; i++){
+                    Integer temp;
+                    if(numberOfSends > 1){
+                        temp = 512;
+                    }
+                    else{
+                        temp = outputLength;
+                    }
+                    finalOutput = finalOutput.concat(receiveCommand(Integer.valueOf(temp)));
+                    sendACK();
+                }
                 
                 BufferedWriter toFile = new BufferedWriter(new FileWriter(fileName, true));
                 toFile.write(finalOutput);
