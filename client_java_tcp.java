@@ -60,25 +60,21 @@ class client_java_tcp{
         System.out.print("Enter server name or IP address: ");
         scanner = new Scanner(System.in);
         IPAddress = scanner.nextLine();
-        //String [] parsed = IPAddress.split(".");
-        //Check to see if there aren't 4 sections of IP Address.
-        // if(parsed.length != 4){
-        //     System.out.println(parsed.length);
-        //     System.out.println(COULD_NOT_CONNECT);
-        //     System.exit(0);
-        // }
-        // //Checks to make sure ip is in valid range for each section.
-        // else{
-        //     for(int i=0; i<parsed.length; i++){
-        //         Integer temp = Integer.valueOf(parsed[i]);
-        //         System.out.print("Temp = ");
-        //         System.out.println(temp);
-        //         if(temp > 255 || temp < 0){
-        //             System.out.println(COULD_NOT_CONNECT);
-        //             System.exit(0);
-        //         }
-        //     }
-        // }
+        ArrayList<String> ipParse = new ArrayList<String>();
+
+        String[] ipSplit = IPAddress.split("\\.");
+        for(String c : ipSplit){
+            ipParse.add(c);
+        }
+
+        for(int i=0; i<ipParse.size(); i++){
+            String temp = ipParse.get(i);
+            Integer tempInt = Integer.valueOf(temp);
+            if(tempInt.intValue() > 255 || tempInt.intValue() < 0){
+                System.out.println(COULD_NOT_CONNECT);
+                System.exit(0);
+            }
+        }
 
         System.out.print("Enter server port number:");
         port = Integer.valueOf(scanner.nextLine());
