@@ -7,7 +7,6 @@ class client_java_udp{
     private DatagramSocket udpSocket;
     private InetAddress serverIPAddress;
     private Integer port;
-    private String clientAddress;
     private static Scanner scanner;
     private static final String ACK = "ACK";
     private static final byte [] bufACK = ACK.getBytes();
@@ -51,6 +50,10 @@ class client_java_udp{
             sendACK();
             String finalOutput = receiveCommand(Integer.valueOf(commandLength));
             sendACK();
+            
+            BufferedWriter toFile = new BufferedWriter(new FileWriter(fileName, true));
+            toFile.write(finalOutput);
+            toFile.close();
             System.out.println(finalOutput);
             
         }catch(Exception e){
