@@ -73,7 +73,7 @@ class client_java_udp{
                     else{
                         temp = outputLength;
                     }
-                    finalOutput = finalOutput.concat(receiveCommand(Integer.valueOf(temp)));
+                    finalOutput = finalOutput.concat(receiveCommand(temp));
                     sendACK();
                 }
                 
@@ -182,8 +182,9 @@ class client_java_udp{
             this.udpSocket.receive(receivedPacket);
             receivedString = new String(receivedPacket.getData(), 0, receivedPacket.getLength());
         }catch(Exception e){
-            e.printStackTrace();
-            receivedString = "Error"; 
+            //e.printStackTrace();
+            System.out.println("Connection timed out.");
+            receivedString = ""; 
         }
         return receivedString;
     }
