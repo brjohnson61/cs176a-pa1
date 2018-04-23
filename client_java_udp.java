@@ -103,7 +103,6 @@ class client_java_udp{
     }
 
     private String receiveLength(){
-        //Integer incomingLength = 0;
         byte [] bufferLength = new byte [512];
         DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
         try{
@@ -112,8 +111,6 @@ class client_java_udp{
             e.printStackTrace();
         }
         String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
-        //System.out.println("Returning incomingLengthMessage");
-        //System.out.println(incomingLengthMessage);
         return incomingLengthMessage;
     }
 
@@ -173,6 +170,15 @@ class client_java_udp{
         System.out.print("Enter server name or IP address: ");
         scanner = new Scanner(System.in);
         IPAddress = scanner.nextLine();
+        ArrayList<String> ipParse = new ArrayList<String>();
+
+        String[] ipSplit = IPAddress.split(".");
+        for(String c : ipSplit){
+            ipParse.add(c);
+        }
+
+        System.out.print("iParse size: ");
+        System.out.println(ipParse.size());
 
         System.out.print("Enter server port number:");
         port = Integer.valueOf(scanner.nextLine());
@@ -181,7 +187,7 @@ class client_java_udp{
             System.exit(0);
         }
 
-        System.out.print("Enter Command: ");
+        System.out.print("Enter command: ");
         command = scanner.nextLine();
         client_java_udp client = new client_java_udp();
 

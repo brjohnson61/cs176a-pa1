@@ -76,7 +76,7 @@ private String processMessage(String message){
         terminalCommand.waitFor();
         terminalCommand.destroy();
     }catch(Exception e){
-        e.printStackTrace();
+        return "Could not fetch file.";
     }
     return processedOutput;
 }

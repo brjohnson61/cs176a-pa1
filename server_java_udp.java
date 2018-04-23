@@ -159,19 +159,22 @@ class server_java_udp{
         return incomingLength;
     }
 
-    private Boolean receiveACK() throws SocketTimeoutException {
-
-        String isACK = receiveCommand(bufACK.length);
-        if(isACK.equals(ACK)){
-            return true;
-        }
-        else{
+    private Boolean receiveACK(){
+        try{
+            String isACK = receiveCommand(bufACK.length);
+            if(isACK.equals(ACK)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
             return false;
         }
-
     }
 
-    private String receiveCommand(Integer expectedLength) throws SocketTimeoutException {
+    private String receiveCommand(Integer expectedLength){
         String receivedString;
         byte[] receiveBuf = new byte[expectedLength];
         DatagramPacket receivedPacket = new DatagramPacket(receiveBuf, receiveBuf.length);
@@ -199,7 +202,7 @@ class server_java_udp{
             terminalCommand.waitFor();
             terminalCommand.destroy();
         }catch(Exception e){
-            e.printStackTrace();
+            return "Could not fetch file.";
         }
         return processedOutput;
     }
