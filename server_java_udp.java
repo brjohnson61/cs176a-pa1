@@ -15,46 +15,14 @@ class server_java_udp{
         
         try{
             this.udpSocket = new DatagramSocket(port);
+            this.udpSocket.setSoTimeout(500);
         }catch(Exception e){
             e.printStackTrace();
         }
         while(true){
             try{
-                Integer incomingLength = 0;
                 Boolean readyForData = false;
-                // byte [] bufferLength = new byte [512];
-                // DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
-                // try{
-                //     this.udpSocket.receive(incoming);
-                // }catch(Exception e){
-                //     e.printStackTrace();
-                // }
-                // String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
-                // this.clientAddress = incoming.getAddress();
-                // this.clientPort = incoming.getPort();
-                // System.out.print("Incoming length: ");
-                // System.out.println(incomingLengthMessage);
-
                 String incomingLengthMessage = receiveLength();
-                
-                // String [] parseCommand = incomingLengthMessage.split(" ");
-                // ArrayList<String> parsedArgsArrList = new ArrayList<String>();
-                // for(String c : parseCommand){
-                //     parsedArgsArrList.add(c);
-                //     System.out.println(c);
-                // }
-                
-                
-                // System.out.println(parsedArgsArrList.size());
-                // if(parsedArgsArrList.size() == 3){
-                //     if(parsedArgsArrList.get(0).equals("length") && parsedArgsArrList.get(1).equals("=")){
-                //         incomingLength = Integer.valueOf(parsedArgsArrList.get(2));
-                //         sendACK();
-                //         readyForData = true;
-                //         System.out.println("Successfully executed ack block");
-                //     }
-                // }
-
                 Integer initialLength = parseLength(incomingLengthMessage);
                 if(initialLength.equals(0)){
                     readyForData = false;
@@ -64,8 +32,6 @@ class server_java_udp{
                     sendACK();
                 }
 
-                System.out.println(initialLength);
-
                 if(readyForData){
                     System.out.println("ACK sent, ready for command");
                     String incomingCommand = receiveCommand(initialLength);
@@ -74,10 +40,6 @@ class server_java_udp{
                     System.out.println(incomingCommand);
                     String commandResult = processMessage(incomingCommand);
                     System.out.println(commandResult);
-                    
-                    // byte[] bufResult = commandResult.getBytes();
-                    // String resultLength = Integer.toString(bufResult.length);
-                    // byte[] resultLengthBuf = resultLength.getBytes();
 
                     if(sendLength(commandResult)){
                         System.out.println("Success sending result length");
@@ -103,10 +65,6 @@ class server_java_udp{
                     else{
                         System.out.println("Client did not receive command results");
                     }
-                    // DatagramPacket resultLengthToClient = new DatagramPacket(resultLengthBuf, resultLengthBuf.length, this.clientAddress, this.clientPort);
-                    // this.udpSocket.send(resultLengthToClient);
-                    // DatagramPacket resultToClient = new DatagramPacket(, length)
-
                 }
             }catch(Exception e){
                 e.printStackTrace();
@@ -115,7 +73,6 @@ class server_java_udp{
     }
 
     private String receiveLength(){
-        //Integer incomingLength = 0;
         byte [] bufferLength = new byte [512];
         DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
         try{
@@ -176,7 +133,6 @@ class server_java_udp{
         ArrayList<String> parsedArgsArrList = new ArrayList<String>();
         for(String c : parseCommand){
             parsedArgsArrList.add(c);
-            //System.out.println(c);
         }
         if(parsedArgsArrList.size() == 3){
             if(parsedArgsArrList.get(0).equals("length") && parsedArgsArrList.get(1).equals("=")){
@@ -185,22 +141,6 @@ class server_java_udp{
         }
         return incomingLength;
     }
-
-
-    // private String receiveLength(){
-    //     //Integer incomingLength = 0;
-    //     byte [] bufferLength = new byte [512];
-    //     DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
-    //     try{
-    //         this.udpSocket.receive(incoming);
-    //     }catch(Exception e){
-    //         e.printStackTrace();
-    //     }
-    //     String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
-    //     System.out.println("Returning incomingLengthMessage");
-    //     System.out.println(incomingLengthMessage);
-    //     return incomingLengthMessage;
-    // }
 
     private Boolean receiveACK(){
 
