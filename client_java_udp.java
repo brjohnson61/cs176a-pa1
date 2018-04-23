@@ -48,13 +48,32 @@ class client_java_udp{
                 System.out.println("Server did not receive command");
             }
             String commandLength = receiveLength();
+            commandLength = Integer.toString(parseLength(commandLength));
             System.out.println(commandLength);
-            System.out.println("Received command");
+            System.out.println("Received command length");
             sendACK();
+            String finalOutput = receiveCommand(Integer.valueOf(commandLength));
+            System.out.println(finalOutput);
             
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    private Integer parseLength(String lengthMessage){
+        Integer incomingLength = 0;
+        String [] parseCommand = lengthMessage.split(" ");
+        ArrayList<String> parsedArgsArrList = new ArrayList<String>();
+        for(String c : parseCommand){
+            parsedArgsArrList.add(c);
+            //System.out.println(c);
+        }
+        if(parsedArgsArrList.size() == 3){
+            if(parsedArgsArrList.get(0).equals("length") && parsedArgsArrList.get(1).equals("=")){
+                incomingLength = Integer.valueOf(parsedArgsArrList.get(2));
+            }
+        }
+        return incomingLength;
     }
 
     private Boolean sendACK(){
