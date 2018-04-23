@@ -80,6 +80,18 @@ class server_java_udp{
                     else{
                         System.out.println("Did not receive ACK");
                     }
+                    if(sendCommand(commandResult)){
+                        System.out.println("Sent command results to client");
+                    }
+                    else{
+                        System.out.println("Failed to send command");
+                    }
+                    if(receiveACK()){
+                        System.out.println("Client received command results");
+                    }
+                    else{
+                        System.out.println("Client did not receive command results");
+                    }
                     // DatagramPacket resultLengthToClient = new DatagramPacket(resultLengthBuf, resultLengthBuf.length, this.clientAddress, this.clientPort);
                     // this.udpSocket.send(resultLengthToClient);
                     // DatagramPacket resultToClient = new DatagramPacket(, length)
@@ -128,6 +140,18 @@ class server_java_udp{
         try{
             DatagramPacket ackOutgoing = new DatagramPacket(bufACK, bufACK.length, this.clientAddress, this.clientPort);
             this.udpSocket.send(ackOutgoing);
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private Boolean sendCommand(String message){
+        try{
+            byte[] bufferCommand = message.getBytes();
+            DatagramPacket outgoingCommandPacket = new DatagramPacket(bufferCommand, bufferCommand.length, this.clientAddress, this.clientPort);
+            this.udpSocket.send(outgoingCommandPacket);
         }catch(Exception e){
             e.printStackTrace();
             return false;
