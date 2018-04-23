@@ -83,30 +83,28 @@ class client_java_tcp{
             System.exit(0);
         }
 
-        System.out.print("Enter Command: ");
+        System.out.print("Enter command: ");
         command = scanner.nextLine();
         client_java_tcp client = new client_java_tcp();
-        // String [] cmdparse = command.split(" > ");
-
-        // if(cmdparse.length > 1){
-        //     System.out.print("Command is: ");
-        //     System.out.println(cmdparse[0]);
-
-        //     System.out.print("Filename is: ");
-        //     System.out.println(cmdparse[1]);
-        //     client.connect(IPAddress, port, cmdparse[0], cmdparse[1]);
-        // }
-        // else{
-            System.out.print("Command is: ");
-            System.out.println(command);
-
-            System.out.println("Filename: ");
-            fileName = scanner.nextLine();
-            client.connect(IPAddress, port, command, fileName);
-        //}
-
         
+        ArrayList<String> commandParse = new ArrayList<String>();
+
+        String[] commandSplit = command.split(">");
+        for(String c : commandSplit){
+            c.trim();
+            commandParse.add(c);
+        }
         
+        System.out.println(commandParse.size());
+        System.out.println(commandParse.get(0));
+        System.out.println(commandParse.get(1));
+
+        //System.out.print("Command is: ");
+        //System.out.println(command);
+
+        System.out.println("Filename: ");
+        fileName = scanner.nextLine();
+        client.connect(IPAddress, port, command, fileName);  
 
     }
 }
