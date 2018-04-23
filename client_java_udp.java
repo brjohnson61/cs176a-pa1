@@ -80,7 +80,7 @@ class client_java_udp{
                 BufferedWriter toFile = new BufferedWriter(new FileWriter(fileName, true));
                 toFile.write(finalOutput);
                 toFile.close();
-                System.out.println(finalOutput);
+                //System.out.println(finalOutput);
             }
             else{
                 System.out.println("Network communication error.");

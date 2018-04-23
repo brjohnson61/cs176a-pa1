@@ -60,8 +60,8 @@ class server_java_udp{
                         }
                     }
                     Integer numberOfSends = ((outputLength/512)+1);
-                    System.out.println("number of sends:");
-                    System.out.println(numberOfSends);
+                    //System.out.println("number of sends:");
+                    //System.out.println(numberOfSends);
                     for(int i=0; i<numberOfSends; i++){
                         int FAIL1 = 0;
                         while(FAIL1 < 3 && !SUCCEED1 && SUCCEED0){
