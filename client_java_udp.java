@@ -18,7 +18,6 @@ class client_java_udp{
             this.udpSocket = new DatagramSocket();
             this.port = portInput;
             this.serverIPAddress = IPAddress;
-            //DatagramPacket incomingACK = new DatagramPacket(bufACK, bufACK.length);
             byte[] bufferCommand = command.getBytes();
             
             if(sendLength(command)){
@@ -34,11 +33,6 @@ class client_java_udp{
                 System.out.println("Did not receive ACK");
             }
             
-            //this.udpSocket.receive(incomingACK);
-            //String incomingACKMessage = new String(incomingACK.getData(), 0, incomingACK.getLength());
-            // if(incomingACKMessage.equals(ACK)){
-            //     System.out.println("ACK received.");   
-            // }
             DatagramPacket outgoingCommandPacket = new DatagramPacket(bufferCommand, bufferCommand.length, IPAddress, port);
             System.out.println("Sending command packet");
             this.udpSocket.send(outgoingCommandPacket);
