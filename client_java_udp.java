@@ -172,7 +172,7 @@ class client_java_udp{
         IPAddress = scanner.nextLine();
         ArrayList<String> ipParse = new ArrayList<String>();
 
-        String[] ipSplit = IPAddress.split(".");
+        String[] ipSplit = IPAddress.split("\\.");
         for(String c : ipSplit){
             ipParse.add(c);
         }
