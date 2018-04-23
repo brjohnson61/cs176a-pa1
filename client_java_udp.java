@@ -19,19 +19,27 @@ class client_java_udp{
             this.port = portInput;
             this.serverIPAddress = IPAddress;
             DatagramPacket incomingACK = new DatagramPacket(bufACK, bufACK.length);
-            String lengthEquals = "length = ";
+            //String lengthEquals = "length = ";
             byte[] bufferCommand = command.getBytes();
-            Integer outgoingLength = Integer.valueOf(bufferCommand.length);
-            String lengthMessage = lengthEquals.concat(Integer.toString(outgoingLength));
-            byte[] bufferLengthMessage = lengthMessage.getBytes();
+            //Integer outgoingLength = Integer.valueOf(bufferCommand.length);
+           // String lengthMessage = lengthEquals.concat(Integer.toString(outgoingLength));
+            //byte[] bufferLengthMessage = lengthMessage.getBytes();
             
-            System.out.print("outgoingLength");
-            System.out.println(outgoingLength);
-            System.out.print("lengthMessage");
-            System.out.println(lengthMessage);
+            if(sendLength(command)){
+                System.out.println("Sent command length");
+            }
+            else{
+                System.out.println("Did not send command length successfully");
+            }
+
+
+            // System.out.print("outgoingLength");
+            // System.out.println(outgoingLength);
+            // System.out.print("lengthMessage");
+            // System.out.println(lengthMessage);
             
-            DatagramPacket outgoingLengthPacket = new DatagramPacket(bufferLengthMessage, bufferLengthMessage.length, IPAddress, port);
-            this.udpSocket.send(outgoingLengthPacket);
+            //DatagramPacket outgoingLengthPacket = new DatagramPacket(bufferLengthMessage, bufferLengthMessage.length, IPAddress, port);
+            //this.udpSocket.send(outgoingLengthPacket);
             this.udpSocket.receive(incomingACK);
             String incomingACKMessage = new String(incomingACK.getData(), 0, incomingACK.getLength());
             if(incomingACKMessage.equals(ACK)){
@@ -114,6 +122,22 @@ class client_java_udp{
             return false;
         }
 
+    }
+
+    private Boolean sendLength(String message){
+        try{
+            byte[] bufResult = message.getBytes();
+            String lengthEquals = "length = ";
+            String resultLength = lengthEquals.concat(Integer.toString(bufResult.length));
+            byte[] resultLengthBuf = resultLength.getBytes();
+
+            DatagramPacket resultLengthToClient = new DatagramPacket(resultLengthBuf, resultLengthBuf.length, this.serverIPAddress, this.port);
+            this.udpSocket.send(resultLengthToClient);
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     private String receiveCommand(Integer expectedLength){
