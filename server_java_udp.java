@@ -13,16 +13,12 @@ class server_java_udp{
 
     public void setupUDPServer(Integer port){
         
-        try{
-            this.udpSocket = new DatagramSocket(port);
-            this.udpSocket.setSoTimeout(500);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
         while(true){
             try{
                 Boolean readyForData = false;
+                this.udpSocket = new DatagramSocket(port);
                 String incomingLengthMessage = receiveLength();
+                this.udpSocket.setSoTimeout(500);
                 Integer initialLength = parseLength(incomingLengthMessage);
                 if(initialLength.equals(0)){
                     readyForData = false;
