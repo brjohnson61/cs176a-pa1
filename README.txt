@@ -17,6 +17,12 @@ Then, type a command followed by areguments, followed by ">" and a file name for
 Example:
 csil-machineX > ls -a > temp;
 
+TCP Writeup:
+
+
+UDP Writeup:
+
+
 Conclusion/Thoughts:
     This project has taught me a lot about UDP.  I used website: http://www.baeldung.com/udp-in-java to gain knowledge about udp in general,
     and based my thought process around their sample server/client.  However, the code I have in my final project has evolved tremendously as both my

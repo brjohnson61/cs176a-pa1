@@ -17,47 +17,68 @@ class client_java_udp{
             this.udpSocket = new DatagramSocket();
             this.port = portInput;
             this.serverIPAddress = IPAddress;
-            
-            if(sendLength(command)){
-                System.out.println("Sent command length");
+            Boolean SUCCEED0 = false;
+            Boolean SUCCEED1 = false;
+            int FAIL0 = 0;
+            int FAIL1 = 0;
+            this.udpSocket.setSoTimeout(500);
+            while(FAIL0<3 && !SUCCEED0){
+                if(sendLength(command)){
+                    FAIL0++;
+                    //System.out.println("Sent command length");
+                }
+                else{
+                    System.out.println("Could not send packet. Please make sure IP address and port number are correct and try again.");
+                    System.exit(0);
+                }
+                if(receiveACK()){
+                    SUCCEED0 = true;
+                    //System.out.println("ACK received");
+                }
+                else{
+                    //System.out.println("Did not receive ACK");
+                }
+            }
+            while(FAIL1<3 && !SUCCEED1 && SUCCEED0){
+                if(sendCommand(command)){
+                    FAIL1++;
+                    //System.out.println("Command Packet Sent");
+                }
+                else{
+                    System.out.println("Could not send packet. Please make sure IP address and port number are correct and try again.");
+                    System.exit(0);
+                }
+                if(receiveACK()){
+                    //System.out.println("Server received command");
+                    SUCCEED1 = true;
+                }
+                else{
+                    //System.out.println("Server did not receive command");
+                }
+            }
+            if(SUCCEED1 && SUCCEED0){
+                String commandLength = receiveLength();
+                commandLength = Integer.toString(parseLength(commandLength));
+                // System.out.println(commandLength);
+                // System.out.println("Received command length");
+                sendACK();
+                String finalOutput = "";
+                finalOutput = receiveCommand(Integer.valueOf(commandLength));
+                sendACK();
+                
+                BufferedWriter toFile = new BufferedWriter(new FileWriter(fileName, true));
+                toFile.write(finalOutput);
+                toFile.close();
+                System.out.println(finalOutput);
             }
             else{
-                System.out.println("Did not send command length successfully");
+                System.out.println("Network communication error.");
+                System.exit(0);
             }
-            if(receiveACK()){
-                System.out.println("ACK received");
-            }
-            else{
-                System.out.println("Did not receive ACK");
-            }
-
-            if(sendCommand(command)){
-                System.out.println("Command Packet Sent");
-            }
-            else{
-                System.out.println("Command Packet not sent");
-            }
-            if(receiveACK()){
-                System.out.println("Server received command");
-            }
-            else{
-                System.out.println("Server did not receive command");
-            }
-            String commandLength = receiveLength();
-            commandLength = Integer.toString(parseLength(commandLength));
-            // System.out.println(commandLength);
-            // System.out.println("Received command length");
-            sendACK();
-            String finalOutput = receiveCommand(Integer.valueOf(commandLength));
-            sendACK();
-            
-            BufferedWriter toFile = new BufferedWriter(new FileWriter(fileName, true));
-            toFile.write(finalOutput);
-            toFile.close();
-            System.out.println(finalOutput);
-            
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Network communication error.");
+            System.exit(0);
         }
         this.udpSocket.close();
     }
@@ -136,7 +157,7 @@ class client_java_udp{
             DatagramPacket resultLengthToClient = new DatagramPacket(resultLengthBuf, resultLengthBuf.length, this.serverIPAddress, this.port);
             this.udpSocket.send(resultLengthToClient);
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return false;
         }
         return true;
