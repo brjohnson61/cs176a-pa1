@@ -18,12 +18,8 @@ class client_java_udp{
             this.udpSocket = new DatagramSocket();
             this.port = portInput;
             this.serverIPAddress = IPAddress;
-            DatagramPacket incomingACK = new DatagramPacket(bufACK, bufACK.length);
-            //String lengthEquals = "length = ";
+            //DatagramPacket incomingACK = new DatagramPacket(bufACK, bufACK.length);
             byte[] bufferCommand = command.getBytes();
-            //Integer outgoingLength = Integer.valueOf(bufferCommand.length);
-           // String lengthMessage = lengthEquals.concat(Integer.toString(outgoingLength));
-            //byte[] bufferLengthMessage = lengthMessage.getBytes();
             
             if(sendLength(command)){
                 System.out.println("Sent command length");
@@ -31,20 +27,18 @@ class client_java_udp{
             else{
                 System.out.println("Did not send command length successfully");
             }
-
-
-            // System.out.print("outgoingLength");
-            // System.out.println(outgoingLength);
-            // System.out.print("lengthMessage");
-            // System.out.println(lengthMessage);
-            
-            //DatagramPacket outgoingLengthPacket = new DatagramPacket(bufferLengthMessage, bufferLengthMessage.length, IPAddress, port);
-            //this.udpSocket.send(outgoingLengthPacket);
-            this.udpSocket.receive(incomingACK);
-            String incomingACKMessage = new String(incomingACK.getData(), 0, incomingACK.getLength());
-            if(incomingACKMessage.equals(ACK)){
-                System.out.println("ACK received.");   
+            if(receiveACK()){
+                System.out.println("ACK received");
             }
+            else{
+                System.out.println("Did not receive ACK");
+            }
+            
+            //this.udpSocket.receive(incomingACK);
+            //String incomingACKMessage = new String(incomingACK.getData(), 0, incomingACK.getLength());
+            // if(incomingACKMessage.equals(ACK)){
+            //     System.out.println("ACK received.");   
+            // }
             DatagramPacket outgoingCommandPacket = new DatagramPacket(bufferCommand, bufferCommand.length, IPAddress, port);
             System.out.println("Sending command packet");
             this.udpSocket.send(outgoingCommandPacket);
