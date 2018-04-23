@@ -16,6 +16,8 @@ class server_java_udp{
         while(true){
             try{
                 Boolean readyForData = false;
+                Boolean SUCCEED1 = false;
+                Boolean SUCCEED0 = false;
                 this.udpSocket = new DatagramSocket(port);
 
                 String incomingLengthMessage = receiveLength();
@@ -38,32 +40,47 @@ class server_java_udp{
                     System.out.println(incomingCommand);
                     String commandResult = processMessage(incomingCommand);
                     System.out.println(commandResult);
+                    int FAIL0 = 0;
+                    while(FAIL0 < 3 && !SUCCEED0){
+                        if(sendLength(commandResult)){
+                            System.out.println("Success sending result length");
+                            FAIL0++;
+                        }
+                        else{
+                            System.out.println("Error");
+                        }
+                        if(receiveACK()){
+                            SUCCEED0 = true;
+                            System.out.println("ReceivedACK!");
+                        
+                        }
+                        else{
+                            System.out.println("Did not receive ACK");
+                        }
+                    }
+                    int FAIL1 = 0;
+                    while(FAIL1 < 3 && !SUCCEED1 && SUCCEED0){
+                        if(sendCommand(commandResult)){
+                            FAIL1++;
+                            System.out.println("Sent command results to client");
+                        }
+                        else{
+                            System.out.println("Failed to send command");
+                        }
+                        if(receiveACK()){
+                            SUCCEED1 = true;
+                            System.out.println("Client received command results");
+                        }
+                        else{
+                            System.out.println("Client did not receive command results");
+                        }
+                    }
 
-                    if(sendLength(commandResult)){
-                        System.out.println("Success sending result length");
+                }
+                else{
+                    if(!SUCCEED0 || !SUCCEED1){
+                        System.out.println("Command not received, listening for coimmand again");
                     }
-                    else{
-                        System.out.println("Error");
-                    }
-                    if(receiveACK()){
-                        System.out.println("ReceivedACK!");
-                    }
-                    else{
-                        System.out.println("Did not receive ACK");
-                    }
-                    if(sendCommand(commandResult)){
-                        System.out.println("Sent command results to client");
-                    }
-                    else{
-                        System.out.println("Failed to send command");
-                    }
-                    if(receiveACK()){
-                        System.out.println("Client received command results");
-                    }
-                    else{
-                        System.out.println("Client did not receive command results");
-                    }
-
                 }
             }catch(Exception e){
                 e.printStackTrace();
