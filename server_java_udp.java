@@ -61,6 +61,7 @@ class server_java_udp{
                 }
                 else{
                     readyForData = true;
+                    sendACK();
                 }
 
                 System.out.println(initialLength);
