@@ -37,27 +37,35 @@ class server_java_udp{
 
                 String incomingLengthMessage = receiveLength();
                 
-                String [] parseCommand = incomingLengthMessage.split(" ");
-                ArrayList<String> parsedArgsArrList = new ArrayList<String>();
-                for(String c : parseCommand){
-                    parsedArgsArrList.add(c);
-                    System.out.println(c);
+                // String [] parseCommand = incomingLengthMessage.split(" ");
+                // ArrayList<String> parsedArgsArrList = new ArrayList<String>();
+                // for(String c : parseCommand){
+                //     parsedArgsArrList.add(c);
+                //     System.out.println(c);
+                // }
+                
+                
+                // System.out.println(parsedArgsArrList.size());
+                // if(parsedArgsArrList.size() == 3){
+                //     if(parsedArgsArrList.get(0).equals("length") && parsedArgsArrList.get(1).equals("=")){
+                //         incomingLength = Integer.valueOf(parsedArgsArrList.get(2));
+                //         sendACK();
+                //         readyForData = true;
+                //         System.out.println("Successfully executed ack block");
+                //     }
+                // }
+
+                Integer initialLength = parseLength(incomingLengthMessage);
+                if(initialLength.equals(0)){
+                    readyForData = false;
                 }
-                
-                
-                System.out.println(parsedArgsArrList.size());
-                if(parsedArgsArrList.size() == 3){
-                    if(parsedArgsArrList.get(0).equals("length") && parsedArgsArrList.get(1).equals("=")){
-                        incomingLength = Integer.valueOf(parsedArgsArrList.get(2));
-                        sendACK();
-                        readyForData = true;
-                        System.out.println("Successfully executed ack block");
-                    }
+                else{
+                    readyForData = true;
                 }
 
                 if(readyForData){
                     System.out.println("ACK sent, ready for command");
-                    String incomingCommand = receiveCommand(incomingLength);
+                    String incomingCommand = receiveCommand(initialLength);
                     sendACK();
                     System.out.print("Command from client: ");
                     System.out.println(incomingCommand);
@@ -158,6 +166,23 @@ class server_java_udp{
         }
         return true;
     }
+
+    private Integer parseLength(String lengthMessage){
+        Integer incomingLength = 0;
+        String [] parseCommand = lengthMessage.split(" ");
+        ArrayList<String> parsedArgsArrList = new ArrayList<String>();
+        for(String c : parseCommand){
+            parsedArgsArrList.add(c);
+            //System.out.println(c);
+        }
+        if(parsedArgsArrList.size() == 3){
+            if(parsedArgsArrList.get(0).equals("length") && parsedArgsArrList.get(1).equals("=")){
+                incomingLength = Integer.valueOf(parsedArgsArrList.get(2));
+            }
+        }
+        return incomingLength;
+    }
+
 
     // private String receiveLength(){
     //     //Integer incomingLength = 0;
