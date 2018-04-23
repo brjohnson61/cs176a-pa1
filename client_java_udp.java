@@ -53,6 +53,7 @@ class client_java_udp{
             System.out.println("Received command length");
             sendACK();
             String finalOutput = receiveCommand(Integer.valueOf(commandLength));
+            sendACK();
             System.out.println(finalOutput);
             
         }catch(Exception e){

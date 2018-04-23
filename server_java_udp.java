@@ -61,6 +61,7 @@ class server_java_udp{
                     else{
                         System.out.println("Client did not receive command results");
                     }
+                    
                 }
             }catch(Exception e){
                 e.printStackTrace();
