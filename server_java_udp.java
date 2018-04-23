@@ -17,15 +17,17 @@ class server_java_udp{
             try{
                 Boolean readyForData = false;
                 this.udpSocket = new DatagramSocket(port);
+
                 String incomingLengthMessage = receiveLength();
                 this.udpSocket.setSoTimeout(500);
                 Integer initialLength = parseLength(incomingLengthMessage);
-                if(initialLength.equals(0)){
-                    readyForData = false;
-                }
-                else{
+                
+                if(!initialLength.equals(0)){
                     readyForData = true;
                     sendACK();
+                }
+                else{
+                    readyForData = false;
                 }
 
                 if(readyForData){
@@ -61,7 +63,7 @@ class server_java_udp{
                     else{
                         System.out.println("Client did not receive command results");
                     }
-                    
+
                 }
             }catch(Exception e){
                 e.printStackTrace();
@@ -70,12 +72,12 @@ class server_java_udp{
         }
     }
 
-    private String receiveLength(){
+    private String receiveLength() throws SocketTimeoutException {
         byte [] bufferLength = new byte [512];
         DatagramPacket incoming = new DatagramPacket(bufferLength, bufferLength.length);
         try{
             this.udpSocket.receive(incoming);
-        }catch(Exception e){
+        }catch(IOException e){
             e.printStackTrace();
         }
         String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
@@ -140,7 +142,7 @@ class server_java_udp{
         return incomingLength;
     }
 
-    private Boolean receiveACK(){
+    private Boolean receiveACK() throws SocketTimeoutException {
 
         String isACK = receiveCommand(bufACK.length);
         if(isACK.equals(ACK)){
@@ -152,17 +154,16 @@ class server_java_udp{
 
     }
 
-    private String receiveCommand(Integer expectedLength){
+    private String receiveCommand(Integer expectedLength) throws SocketTimeoutException {
         String receivedString;
+        byte[] receiveBuf = new byte[expectedLength];
+        DatagramPacket receivedPacket = new DatagramPacket(receiveBuf, receiveBuf.length);
         try{
-            byte[] receiveBuf = new byte[expectedLength];
-            DatagramPacket receivedPacket = new DatagramPacket(receiveBuf, receiveBuf.length);
             this.udpSocket.receive(receivedPacket);
-            receivedString = new String(receivedPacket.getData(), 0, receivedPacket.getLength());
-        }catch(Exception e){
+        }catch(IOException e){
             e.printStackTrace();
-            receivedString = "Error"; 
         }
+        receivedString = new String(receivedPacket.getData(), 0, receivedPacket.getLength());
         return receivedString;
     }
 
