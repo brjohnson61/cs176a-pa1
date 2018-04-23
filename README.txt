@@ -18,10 +18,17 @@ Example:
 csil-machineX > ls -a > temp;
 
 TCP Writeup:
-
+    This part of the assignment was pretty straightforward, because I have programmed using TCP in the past and in a different class this quarter.
+    However, some difficulty arose when I tried to wrap too many buffered streams around the input/output streams, so I switch to Object Input/Output
+    Streams for sending information to and from the socket.  Difficulty also arose when trying to make a system call to terminal, but I was able to
+    understand how to do it after a little bit of searching.
 
 UDP Writeup:
-
+    By far the more difficult part of the assignment, using UDP to send messages back and forth from server top client has taught me a lot.  My final code
+    is not perfect, becasue there are still some errors when sending some of the bigger files across the server.  However, transmission time is very fast, 
+    and allows for "send and forget" (with ACK of course) style of sending messages. ALthough this is faster, more relies upon the programmer to make sure
+    information reaches its destination.  I was able to implement the acknowledgement signal to verify each send as well as create up to 2 additional send tries.
+    Overall, this project's hands on experience with UDP has taught me many things not only about protocol, but also about system calls and using abstract data types.
 
 Conclusion/Thoughts:
     This project has taught me a lot about UDP.  I used website: http://www.baeldung.com/udp-in-java to gain knowledge about udp in general,
