@@ -22,7 +22,9 @@ void setupTCPServer(){
     try{
         this.tcpServerSocket = new ServerSocket(this.ListeningPort);
     }catch(Exception e){
-        e.printStackTrace();
+        //e.printStackTrace();
+        System.out.println("Could not create server socket. please try again.");
+        System.exit(0);
     }
     while(true){
         try{
@@ -30,29 +32,30 @@ void setupTCPServer(){
             System.out.println("Server waiting for request");
             this.tcpSocket = this.tcpServerSocket.accept();
             
-            System.out.println("SocketAccepted");
+            //System.out.println("SocketAccepted");
 
             //set up streams
             this.inStream = new ObjectInputStream(this.tcpSocket.getInputStream());
             this.outStream = new ObjectOutputStream(this.tcpSocket.getOutputStream());
             
-            System.out.println("Input streams created");
+            //System.out.println("Input streams created");
 
             //get terminal command from client
             String message = (String) this.inStream.readObject();
 
-            System.out.print("Message is: ");
-            System.out.println(message);
+            //System.out.print("Message is: ");
+            //System.out.println(message);
 
             //run command on server
             String outputToClient = processMessage(message);
 
-            System.out.println("Ran command, output is: ");
-            System.out.println(outputToClient);
+            //System.out.println("Ran command, output is: ");
+            //System.out.println(outputToClient);
 
             //send output back to client
-            System.out.println("Writing output back to client");
+            //System.out.println("Writing output back to client");
             this.outStream.writeObject(outputToClient);
+            System.out.println("Output sent to server.");
 
         }catch(Exception e){
             e.printStackTrace();
