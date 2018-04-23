@@ -177,8 +177,16 @@ class client_java_udp{
             ipParse.add(c);
         }
 
-        System.out.print("iParse size: ");
-        System.out.println(ipParse.size());
+        for(int i=0; i<ipParse.size(); i++){
+            String temp = ipParse.get(i);
+            Integer tempInt = Integer.valueOf(temp);
+            if(tempInt.intValue() > 255 || tempInt.intValue() < 0){
+                System.out.println(COULD_NOT_CONNECT);
+                System.exit(0);
+            }
+        }
+        // System.out.print("iParse size: ");
+        // System.out.println(ipParse.size());
 
         System.out.print("Enter server port number:");
         port = Integer.valueOf(scanner.nextLine());
