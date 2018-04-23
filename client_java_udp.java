@@ -18,7 +18,7 @@ class client_java_udp{
             this.udpSocket = new DatagramSocket();
             this.port = portInput;
             this.serverIPAddress = IPAddress;
-            byte[] bufferCommand = command.getBytes();
+            //byte[] bufferCommand = command.getBytes();
             
             if(sendLength(command)){
                 System.out.println("Sent command length");
@@ -33,10 +33,15 @@ class client_java_udp{
                 System.out.println("Did not receive ACK");
             }
             
-            DatagramPacket outgoingCommandPacket = new DatagramPacket(bufferCommand, bufferCommand.length, IPAddress, port);
-            System.out.println("Sending command packet");
-            this.udpSocket.send(outgoingCommandPacket);
-            System.out.println("Command Packet Sent");
+            //DatagramPacket outgoingCommandPacket = new DatagramPacket(bufferCommand, bufferCommand.length, IPAddress, port);
+            //System.out.println("Sending command packet");
+            //this.udpSocket.send(outgoingCommandPacket);
+            if(sendCommand(command)){
+                System.out.println("Command Packet Sent");
+            }
+            else{
+                System.out.println("Command Packet not sent");
+            }
             if(receiveACK()){
                 System.out.println("Server received command");
             }
@@ -71,6 +76,18 @@ class client_java_udp{
             }
         }
         return incomingLength;
+    }
+
+    private Boolean sendCommand(String message){
+        try{
+            byte[] bufferCommand = message.getBytes();
+            DatagramPacket outgoingCommandPacket = new DatagramPacket(bufferCommand, bufferCommand.length, this.serverIPAddress, this.port);
+            this.udpSocket.send(outgoingCommandPacket);
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     private Boolean sendACK(){
