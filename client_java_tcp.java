@@ -91,19 +91,21 @@ class client_java_tcp{
 
         String[] commandSplit = command.split(">");
         for(String c : commandSplit){
-            c.trim();
-            commandParse.add(c);
+            String temp = c.trim();
+            commandParse.add(temp);
         }
-        
+
         System.out.println(commandParse.size());
         System.out.println(commandParse.get(0));
         System.out.println(commandParse.get(1));
 
+        command = commandParse.get(0);
+        fileName = commandParse.get(1);
         //System.out.print("Command is: ");
         //System.out.println(command);
 
-        System.out.println("Filename: ");
-        fileName = scanner.nextLine();
+        //System.out.println("Filename: ");
+        //fileName = scanner.nextLine();
         client.connect(IPAddress, port, command, fileName);  
 
     }
