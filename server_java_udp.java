@@ -65,6 +65,7 @@ class server_java_udp{
             }catch(Exception e){
                 e.printStackTrace();
             }
+            this.udpSocket.close();
         }
     }
 
