@@ -185,8 +185,6 @@ class client_java_udp{
                 System.exit(0);
             }
         }
-        // System.out.print("iParse size: ");
-        // System.out.println(ipParse.size());
 
         System.out.print("Enter server port number:");
         port = Integer.valueOf(scanner.nextLine());
@@ -199,16 +197,23 @@ class client_java_udp{
         command = scanner.nextLine();
         client_java_udp client = new client_java_udp();
 
-        System.out.print("Command is: ");
-        System.out.println(command);
+        ArrayList<String> commandParse = new ArrayList<String>();
 
-        System.out.println("Filename: ");
-        fileName = scanner.nextLine();
+        String[] commandSplit = command.split(">");
+        for(String c : commandSplit){
+            String temp = c.trim();
+            commandParse.add(temp);
+        }
+
+        command = commandParse.get(0);
+        fileName = commandParse.get(1);
+        
         try{
             InetAddress ip = InetAddress.getByName(IPAddress);
             client.connect(ip, port, command, fileName);
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println(FAIL_SEND);
+            System.exit(0);
         }
         
     }

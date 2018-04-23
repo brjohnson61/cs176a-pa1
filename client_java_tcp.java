@@ -54,7 +54,7 @@ class client_java_tcp{
         String fileName = "";
         String COULD_NOT_CONNECT = "Could not connect to server.";
         String INVALID_PORT = "Invalid port number";
-        String FAIL_SEND = "Failed to connect to server. Terminating.";
+        String FAIL_SEND = "Failed to send command. Terminating.";
         String CANNOT_FETCH = "Could not fetch file";
         
         System.out.print("Enter server name or IP address: ");
@@ -95,17 +95,8 @@ class client_java_tcp{
             commandParse.add(temp);
         }
 
-        System.out.println(commandParse.size());
-        System.out.println(commandParse.get(0));
-        System.out.println(commandParse.get(1));
-
         command = commandParse.get(0);
         fileName = commandParse.get(1);
-        //System.out.print("Command is: ");
-        //System.out.println(command);
-
-        //System.out.println("Filename: ");
-        //fileName = scanner.nextLine();
         client.connect(IPAddress, port, command, fileName);  
 
     }

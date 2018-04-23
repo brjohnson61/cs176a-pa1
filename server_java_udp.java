@@ -100,8 +100,8 @@ class server_java_udp{
         String incomingLengthMessage = new String(incoming.getData(), 0, incoming.getLength());
         this.clientAddress = incoming.getAddress();
         this.clientPort = incoming.getPort();
-        System.out.println("Returning incomingLengthMessage");
-        System.out.println(incomingLengthMessage);
+        //System.out.println("Returning incomingLengthMessage");
+        //System.out.println(incomingLengthMessage);
         return incomingLengthMessage;
     }
 
@@ -126,7 +126,7 @@ class server_java_udp{
             DatagramPacket ackOutgoing = new DatagramPacket(bufACK, bufACK.length, this.clientAddress, this.clientPort);
             this.udpSocket.send(ackOutgoing);
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return false;
         }
         return true;
@@ -138,7 +138,7 @@ class server_java_udp{
             DatagramPacket outgoingCommandPacket = new DatagramPacket(bufferCommand, bufferCommand.length, this.clientAddress, this.clientPort);
             this.udpSocket.send(outgoingCommandPacket);
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return false;
         }
         return true;
@@ -169,7 +169,7 @@ class server_java_udp{
                 return false;
             }
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return false;
         }
     }
@@ -189,6 +189,7 @@ class server_java_udp{
 
     private String processMessage(String message){
         String processedOutput = "";
+        //try block credit goes to https://stackoverflow.com/questions/792024/how-to-execute-system-commands-linux-bsd-using-java
         try{
             Process terminalCommand = Runtime.getRuntime().exec(message);
             InputStreamReader fromTerminal = new InputStreamReader(terminalCommand.getInputStream());
@@ -218,12 +219,13 @@ public static void main(String[] args) {
         InetAddress ipAddress = InetAddress.getLocalHost(); 
         IPAddress = ipAddress.getHostAddress();
     }catch(UnknownHostException uhe){
-        uhe.printStackTrace();
+        System.out.println("Could not get server IP Address.");
+        System.exit(0);
     }
     System.out.print("This machine's IP: ");
     System.out.println(IPAddress);
 
-    System.out.println("Server Listening Port:");
+    //System.out.println("Server Listening Port:");
     Integer userInput = Integer.valueOf(scanner.nextLine());
 
     if((userInput > 0) && (userInput < 65535)){

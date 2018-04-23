@@ -63,6 +63,7 @@ void setupTCPServer(){
 
 private String processMessage(String message){
     String processedOutput = "";
+    //try block credit goes to https://stackoverflow.com/questions/792024/how-to-execute-system-commands-linux-bsd-using-java
     try{
         Process terminalCommand = Runtime.getRuntime().exec(message);
         InputStreamReader fromTerminal = new InputStreamReader(terminalCommand.getInputStream());
