@@ -37,7 +37,7 @@ class server_java_udp{
                     String incomingCommand = receiveCommand(initialLength);
                     sendACK();
                     //System.out.print("Command from client: ");
-                    System.out.println(incomingCommand);
+                    //System.out.println(incomingCommand);
                     String commandResult = processMessage(incomingCommand);
                     //System.out.println(commandResult);
                     Integer outputLength = commandResult.length()*2;
